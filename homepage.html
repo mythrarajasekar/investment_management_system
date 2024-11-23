@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investment Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Apply background image directly to the body */
+        body {
+            background: url('/static/images/image.jpeg') no-repeat center center fixed;
+            background-size: cover;
+            
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            
+            overflow-x: hidden;
+        }
+        .text-center mb-4{
+            color: rgb(0, 0, 0);
+        }
+
+        .navbar {
+            background-color: rgba(166, 142, 142, 0.8); /* Semi-transparent navbar */
+        }
+
+        .header-text {
+            text-align: center;
+            color: rgb(0, 0, 0);
+            margin-top: 200px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); /* Add text shadow for readability */
+        }
+
+        .header-text h1 {
+            font-size: 3rem;
+            font-weight: bold;
+            color: black;
+        }
+
+        .header-text p {
+            font-size: 1.25rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4" style="color: white;">Investment Management System</h1>
+
+        <!-- Search Form -->
+        <div class="mb-3 text-center">
+            <form action="/search" method="POST" class="form-inline">
+                <input type="text" name="investment_id" class="form-control mr-2" placeholder="Search by Investment ID" required>
+                <button type="submit" class="btn btn-primary">Search</button>
+            </form>
+        </div>
+
+        <!-- Display Investments Table -->
+        <div class="card">
+            <div class="card-header">
+                <h4>Investment Details</h4>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered table-striped">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Investment ID</th>
+                            <th>Investment Type</th>
+                            <th>Amount</th>
+                            <th>Investor Name</th>
+                            <th>Interest Rate</th>
+                            <th>Duration (Months)</th>
+                            <th>Start Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for investment in investments %}
+                            <tr>
+                                <td>{{ investment[0] }}</td>   <!-- Investment ID -->
+                                <td>{{ investment[1] }}</td>   <!-- Type -->
+                                <td>${{ investment[2] }}</td>  <!-- Amount -->
+                                <td>{{ investment[3] }}</td>   <!-- Investor Name -->
+                                <td>{{ investment[4] }}%</td>  <!-- Interest Rate -->
+                                <td>{{ investment[5] }}</td>   <!-- Duration -->
+                                <td>{{ investment[6] }}</td>   <!-- Start Date -->
+                                <td>
+                                    <!-- Edit Button -->
+                                    <a href="/edit/{{ investment[0] }}" class="btn btn-warning btn-sm">Edit</a>
+                                    <!-- Delete Button -->
+                                    <a href="/delete/{{ investment[0] }}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this investment?')">Delete</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Add New Investment Form -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <h4>Add a New Investment</h4>
+            </div>
+            <div class="card-body">
+                <form action="/insert" method="POST">
+                    <div class="form-group">
+                        <label for="investment_id">Investment ID:</label>
+                        <input type="text" class="form-control" name="investment_id" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="investment_type">Investment Type:</label>
+                        <input type="text" class="form-control" name="investment_type" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="amount">Amount ($):</label>
+                        <input type="number" class="form-control" name="amount" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="investor_name">Investor Name:</label>
+                        <input type="text" class="form-control" name="investor_name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="interest_rate">Interest Rate (%):</label>
+                        <input type="number" class="form-control" name="interest_rate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="duration">Duration (Months):</label>
+                        <input type="number" class="form-control" name="duration" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="start_date">Start Date:</label>
+                        <input type="date" class="form-control" name="start_date" required>
+                    </div>
+                    <button type="submit" class="btn btn-success mt-3">Add Investment</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html>
